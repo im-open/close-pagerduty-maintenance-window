@@ -1,56 +1,41 @@
-# custom-action-template
+# Close PagerDuty Maintenance Window
 
-This template can be used to quickly start a new custom js action repository.  Click the `Use this template` button at the top to get started.
-
-## TODOs
-- Readme
-  - [ ] Update the Inputs section with the correct action inputs
-  - [ ] Update the Example section with the correct usage   
-- package.json
-  - [ ] Update the `name` with the new action value
-- main.js
-  - [ ] Implement your custom action
-- action.yml
-  - [ ] Fill in the correct name, description, inputs and outputs
-- check-for-unstaged-changes.sh
-  - [ ] If you encounter a permission denied error when the build.yml workflow runs, execute the following command: `git update-index --chmod=+x ./check-for-unstaged-changes.sh`
-- .prettierrc.json
-  - [ ] Update any preferences you might have
-- CODEOWNERS
-  - [ ] Update as appropriate
-- Repository Settings
-  - [ ] On the *Options* tab check the box to *Automatically delete head branches*
-  - [ ] On the *Options* tab update the repository's visibility
-  - [ ] On the *Branches* tab add a branch protection rule
-    - [ ] Check *Require pull request reviews before merging*
-    - [ ] Check *Dismiss stale pull request approvals when new commits are pushed*
-    - [ ] Check *Require review from Code Owners*
-    - [ ] Check *Include Administrators*
-  - [ ] On the *Manage Access* tab add the appropriate groups
+This action will close a PagerDuty Maintenance Window using a provided maintenance window ID.
 
 ## Inputs
-| Parameter | Is Required | Description           |
-| ----------|-------------|-----------------------|
-| `input-1` | true        | Description goes here |
-| `input-2` | false       | Description goes here |
+| Parameter               | Is Required | Description                                                                            |
+| ----------------------- | ----------- | -------------------------------------------------------------------------------------- |
+| `pagerduty-api-key`     | true        | The PagerDuty api key that allows access to your services.                             |
+| `maintenance-window-id` | true        | The ID of the maintenance window to be closed.                                         |
+| `minutes`               | false       | The number of minutes to close the window in.  Defaults to 3.  Must be greater than 0. |
 
 
 ## Example
 
 ```yml
-# TODO: Fill in the correct usage
-jobs:
-  job1:
+  jobs:
+    deploy-the-code:
     runs-on: [self-hosted, ubuntu-20.04]
     steps:
-      step1: 
-        - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-        - name: Add Step Here
-          uses: im-open/this-repo@v1
-          with:
-            input-1: 'abc'
-            input-2: '123
+      - name: Open a window
+        id: open-window
+        uses: im-open/open-pagerduty-maintenance-window@v1.0.0
+        with:
+          pagerduty-api-key: ${{secrets.PAGERDUTY_API_KEY}}
+          description: 'Code deployment from GitHub Actions'
+          minutes: 15
+          service-ids: '[ "P0ABCDE" ]'
+      
+      - run: |
+          deploy-the-code.sh
+      
+      - name: Close a window
+        uses: im-open/close-pagerduty-maintenance-window@v1.0.0
+        with:
+          pagerduty-api-key: ${{secrets.PAGERDUTY_API_KEY}}
+          maintenance-window-id: ${{ steps.open-window.outputs.maintenance-window-id }}
 ```
 
 ## Recompiling
