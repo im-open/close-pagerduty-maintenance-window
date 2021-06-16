@@ -1,13 +1,18 @@
-name: 'Custom Action Template'
+name: 'Close a PagerDuty Maintenance Window'
 
-description: 'Add description here'
+description: 'Closes the specified PagerDuty maintenance window.'
 inputs:
-  input-1:
-    description: 'Add a description here'
+  pagerduty-api-key:
+    description: 'The PagerDuty API Key that allows access to your services'
     required: true
-  input-2:
-    description: 'Add a description here'
-    required: false
+  maintenance-window-id:
+    description: 'The ID of the maintenance window to be closed.' 
+    required: true
+  minutes:
+    description: 'The number of minutes to close the window in.  Defaults to 3.  Must be greater than 0.'
+    required: true
+    default: 3
+
 runs:
   using: 'node12'
   main: 'dist/index.js'
