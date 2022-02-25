@@ -1314,12 +1314,10 @@ var require_follow_redirects = __commonJS({
         var redirectUrlParts = url.parse(redirectUrl);
         Object.assign(this._options, redirectUrlParts);
         if (
-          !(
-            redirectUrlParts.host === currentHost ||
-            isSubdomainOf(redirectUrlParts.host, currentHost)
-          )
+          redirectUrlParts.protocol !== currentUrlParts.protocol ||
+          !isSameOrSubdomain(redirectUrlParts.host, currentHost)
         ) {
-          removeMatchingHeaders(/^authorization$/i, this._options.headers);
+          removeMatchingHeaders(/^(?:authorization|cookie)$/i, this._options.headers);
         }
         if (typeof this._options.beforeRedirect === 'function') {
           var responseDetails = { headers: response.headers };
@@ -1419,11 +1417,13 @@ var require_follow_redirects = __commonJS({
       var lastValue;
       for (var header in headers) {
         if (regex.test(header)) {
-          lastValue = headers[header].toString().trim();
+          lastValue = headers[header];
           delete headers[header];
         }
       }
-      return lastValue;
+      return lastValue === null || typeof lastValue === 'undefined'
+        ? void 0
+        : String(lastValue).trim();
     }
     function createErrorType(code, defaultMessage) {
       function CustomError(cause) {
@@ -1448,7 +1448,10 @@ var require_follow_redirects = __commonJS({
       request.on('error', noop);
       request.abort();
     }
-    function isSubdomainOf(subdomain, domain) {
+    function isSameOrSubdomain(subdomain, domain) {
+      if (subdomain === domain) {
+        return true;
+      }
       const dot = subdomain.length - domain.length - 1;
       return dot > 0 && subdomain[dot] === '.' && subdomain.endsWith(domain);
     }
