@@ -27,7 +27,7 @@ This action will close a PagerDuty Maintenance Window using a provided maintenan
     deploy-the-code:
     runs-on: [self-hosted, ubuntu-20.04]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Open a window
         id: open-window
