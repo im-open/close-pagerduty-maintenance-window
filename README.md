@@ -27,11 +27,11 @@ This action will close a PagerDuty Maintenance Window using a provided maintenan
     deploy-the-code:
     runs-on: [self-hosted, ubuntu-20.04]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Open a window
         id: open-window
-        uses: im-open/open-pagerduty-maintenance-window@v1.1.4
+        uses: im-open/open-pagerduty-maintenance-window@v1.2.0
         with:
           pagerduty-api-key: ${{secrets.PAGERDUTY_API_KEY}}
           description: 'Code deployment from GitHub Actions'
@@ -42,7 +42,7 @@ This action will close a PagerDuty Maintenance Window using a provided maintenan
           deploy-the-code.sh
       
       - name: Close a window
-        uses: im-open/close-pagerduty-maintenance-window@v1.0.6
+        uses: im-open/close-pagerduty-maintenance-window@v1.1.0
         with:
           pagerduty-api-key: ${{secrets.PAGERDUTY_API_KEY}}
           maintenance-window-id: ${{ steps.open-window.outputs.maintenance-window-id }}
