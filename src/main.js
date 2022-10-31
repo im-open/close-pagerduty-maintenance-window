@@ -3,21 +3,18 @@ const axios = require('axios');
 const add = require('date-fns/add');
 const format = require('date-fns/format');
 
-const pagerdutyApiKey = core.getInput('pagerduty-api-key');
-const maintenanceWindowId = core.getInput('maintenance-window-id');
+// When used, this requiredArgOptions will cause the action to error if a value has not been provided.
+const requiredArgOptions = {
+  required: true,
+  trimWhitespace: true
+};
+
+const pagerdutyApiKey = core.getInput('pagerduty-api-key', requiredArgOptions);
+const maintenanceWindowId = core.getInput('maintenance-window-id', requiredArgOptions);
 const minutes = parseInt(core.getInput('minutes'));
 
 try {
   if (minutes <= 0) core.setFailed('The minutes argument must be greater than 0.');
-  if (!pagerdutyApiKey || !maintenanceWindowId) {
-    core.setFailed('The pagerduty-api-key was empty but must be provided');
-    return;
-  }
-
-  if (!maintenanceWindowId) {
-    core.setFailed('The maintenance-window-id was empty but must be provided');
-    return;
-  }
 
   const endDate = add(new Date(), {
     minutes: minutes
@@ -48,10 +45,12 @@ try {
     })
     .catch(function (error) {
       core.setFailed(
-        `An error making the request to close the PagerDuty maintenance window: ${error}`
+        `An error making the request to close the PagerDuty maintenance window: ${error.message}`
       );
       return;
     });
 } catch (error) {
-  core.setFailed(`An error occurred while closing the PagerDuty maintenance window: ${error}`);
+  core.setFailed(
+    `An error occurred while closing the PagerDuty maintenance window: ${error.message}`
+  );
 }
