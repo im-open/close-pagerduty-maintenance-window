@@ -6771,19 +6771,15 @@ var core = require_core();
 var axios = require_axios2();
 var add = require_add();
 var format = require_format();
-var pagerdutyApiKey = core.getInput('pagerduty-api-key');
-var maintenanceWindowId = core.getInput('maintenance-window-id');
+var requiredArgOptions = {
+  required: true,
+  trimWhitespace: true
+};
+var pagerdutyApiKey = core.getInput('pagerduty-api-key', requiredArgOptions);
+var maintenanceWindowId = core.getInput('maintenance-window-id', requiredArgOptions);
 var minutes = parseInt(core.getInput('minutes'));
 try {
   if (minutes <= 0) core.setFailed('The minutes argument must be greater than 0.');
-  if (!pagerdutyApiKey || !maintenanceWindowId) {
-    core.setFailed('The pagerduty-api-key was empty but must be provided');
-    return;
-  }
-  if (!maintenanceWindowId) {
-    core.setFailed('The maintenance-window-id was empty but must be provided');
-    return;
-  }
   const endDate = add(new Date(), {
     minutes
   });
@@ -6811,10 +6807,12 @@ try {
     })
     .catch(function (error) {
       core.setFailed(
-        `An error making the request to close the PagerDuty maintenance window: ${error}`
+        `An error making the request to close the PagerDuty maintenance window: ${error.message}`
       );
       return;
     });
 } catch (error) {
-  core.setFailed(`An error occurred while closing the PagerDuty maintenance window: ${error}`);
+  core.setFailed(
+    `An error occurred while closing the PagerDuty maintenance window: ${error.message}`
+  );
 }

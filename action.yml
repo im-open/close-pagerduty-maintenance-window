@@ -11,7 +11,7 @@ inputs:
   minutes:
     description: 'The number of minutes to close the window in.  Defaults to 3.  Must be greater than 0.'
     required: true
-    default: 3
+    default: '3'
 
 runs:
   using: 'node16'
