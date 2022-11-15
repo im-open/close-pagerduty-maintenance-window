@@ -42,7 +42,7 @@ This action will close a PagerDuty Maintenance Window using a provided maintenan
           deploy-the-code.sh
       
       - name: Close a window
-        uses: im-open/close-pagerduty-maintenance-window@v1.1.1
+        uses: im-open/close-pagerduty-maintenance-window@v1.1.2
         with:
           pagerduty-api-key: ${{secrets.PAGERDUTY_API_KEY}}
           maintenance-window-id: ${{ steps.open-window.outputs.maintenance-window-id }}
