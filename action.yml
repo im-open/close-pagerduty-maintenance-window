@@ -1,6 +1,6 @@
-name: 'Close a PagerDuty Maintenance Window'
+name: Close a PagerDuty Maintenance Window
+description: Closes the specified PagerDuty maintenance window.
 
-description: 'Closes the specified PagerDuty maintenance window.'
 inputs:
   pagerduty-api-key:
     description: 'The PagerDuty API Key that allows access to your services'
