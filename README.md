@@ -31,6 +31,7 @@ This action will close a PagerDuty Maintenance Window using a provided maintenan
 
       - name: Open a window
         id: open-window
+        # You may also reference just the major or major.minor version
         uses: im-open/open-pagerduty-maintenance-window@v1.2.1
         with:
           pagerduty-api-key: ${{secrets.PAGERDUTY_API_KEY}}
@@ -42,7 +43,8 @@ This action will close a PagerDuty Maintenance Window using a provided maintenan
           deploy-the-code.sh
       
       - name: Close a window
-        uses: im-open/close-pagerduty-maintenance-window@v1.1.2
+        # You may also reference just the major or major.minor version
+        uses: im-open/close-pagerduty-maintenance-window@v1.1.3
         with:
           pagerduty-api-key: ${{secrets.PAGERDUTY_API_KEY}}
           maintenance-window-id: ${{ steps.open-window.outputs.maintenance-window-id }}
