@@ -47,7 +47,7 @@ This action will close a PagerDuty Maintenance Window using a provided maintenan
       
       - name: Close a window
         # You may also reference just the major or major.minor version
-        uses: im-open/close-pagerduty-maintenance-window@v1.1.5
+        uses: im-open/close-pagerduty-maintenance-window@v1.2.0
         with:
           pagerduty-api-key: ${{secrets.PAGERDUTY_API_KEY}}
           maintenance-window-id: ${{ steps.open-window.outputs.maintenance-window-id }}
@@ -101,7 +101,7 @@ This project has adopted the [im-open's Code of Conduct](https://github.com/im-o
 
 ## License
 
-Copyright &copy; 2023, Extend Health, LLC. Code released under the [MIT license](LICENSE).
+Copyright &copy; 2024, Extend Health, LLC. Code released under the [MIT license](LICENSE).
 
 <!-- Links -->
 [Incrementing the Version]: #incrementing-the-version
