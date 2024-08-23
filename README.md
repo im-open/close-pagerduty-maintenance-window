@@ -28,7 +28,7 @@ This action will close a PagerDuty Maintenance Window using a provided maintenan
 ```yml
   jobs:
     deploy-the-code:
-    runs-on: [self-hosted, ubuntu-20.04]
+    runs-on: im-linux
     steps:
       - uses: actions/checkout@v3
 
